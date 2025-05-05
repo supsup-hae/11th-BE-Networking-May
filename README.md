@@ -47,6 +47,47 @@
 
 ---
 
+## 📁 프로젝트 폴더 구조
+
+```bash
+src
+└── main
+    └── java
+        └── cotato
+            └── backend
+                ├── api                   # API 엔드포인트(컨트롤러) 계층
+                │   ├── weather           
+                │   └── location          
+                ├── domain                
+                │   ├── weather           # 날씨 도메인
+                │   │   ├── controller
+                │   │   ├── entity
+                │   │   ├── dto
+                │   │   ├── error
+                │   │   ├── enums
+                │   │   ├── repository
+                │   │   └── service
+                │   │       ├── command
+                │   │       └── query
+                │   └── location          # 위치 도메인
+                │       ├── controller
+                │       ├── entity
+                │       ├── dto
+                │       ├── error
+                │       ├── enums
+                │       ├── repository
+                │       └── service
+                │           ├── command
+                │           └── query
+                ├── infra                 # 외부 시스템 연동, 인프라, 설정 등
+                └── global                # 전역 공통 코드
+                    ├── common
+                    ├── config
+                    ├── entity
+                    ├── error
+                    └── util
+```
+
 ## 🏷️ 커밋 타입(Type) 및 gitmoji
 
 | 타입       | gitmoji(option) | 설명     |
