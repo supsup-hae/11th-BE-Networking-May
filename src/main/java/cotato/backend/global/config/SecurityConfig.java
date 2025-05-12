@@ -24,6 +24,7 @@ public class SecurityConfig {
 	private final CorsFilter corsFilter;
 	private static final String[] WHITE_LIST = {
 		"/",
+		"/**",
 		"/error",
 		"/favicon.ico",
 		"/v3/api-docs/**",
