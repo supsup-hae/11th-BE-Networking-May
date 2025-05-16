@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<ErrorResponse>> handleIllegalArgument(IllegalArgumentException e,
 		HttpServletRequest request) {
 		log.error("[Error] IllegalArgumentException : {}", e.getMessage());
-		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 발생 이유: {}", (Object)e.getStackTrace());
 		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
 
 		ErrorResponse response = ErrorResponse.of(
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<ErrorResponse>> handleResourceNotFound(ResourceNotFoundException e,
 		HttpServletRequest request) {
 		log.error("[Error] ResourceNotFoundException : {}", e.getMessage());
-		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 발생 이유: {}", (Object)e.getStackTrace());
 		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
 
 		ErrorResponse response = ErrorResponse.of(
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<ErrorResponse>> handleExternalApiException(ExternalApiException e,
 		HttpServletRequest request) {
 		log.error("[Error] ExternalApiException : {}", e.getMessage());
-		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 발생 이유: {}", (Object)e.getStackTrace());
 		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
 
 		ErrorResponse response = ErrorResponse.of(
@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<ErrorResponse>> handleException(Exception e, HttpServletRequest request) {
 		log.error("[Error] Exception : {}", e.getMessage());
-		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 발생 이유: {}", (Object)e.getStackTrace());
 		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
 
 		ErrorResponse response = ErrorResponse.of(
