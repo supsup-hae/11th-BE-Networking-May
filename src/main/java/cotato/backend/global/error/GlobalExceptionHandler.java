@@ -1,60 +1,85 @@
 package cotato.backend.global.error;
 
-import cotato.backend.global.common.SuccessResponse;
-import cotato.backend.global.common.ErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import static cotato.backend.global.error.ErrorCode.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
+import cotato.backend.global.common.ApiResponse;
+import cotato.backend.global.common.ErrorResponse;
+import cotato.backend.global.error.exception.ExternalApiException;
+import cotato.backend.global.error.exception.ResourceNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException e, HttpServletRequest request) {
-        return ResponseEntity.badRequest().body(
-                ErrorResponse.builder()
-                        .success(false)
-                        .message(e.getMessage())
-                        .path(request.getRequestURI())
-                        .timestamp(LocalDateTime.now())
-                        .build()
-        );
-    }
+	private static final HttpStatus HTTP_STATUS_OK = HttpStatus.OK;
 
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ApiResponse<ErrorResponse>> handleIllegalArgument(IllegalArgumentException e,
+		HttpServletRequest request) {
+		log.error("[Error] IllegalArgumentException : {}", e.getMessage());
+		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
 
+		ErrorResponse response = ErrorResponse.of(
+			INVALID_INPUT_VALUE,
+			e.getMessage(),
+			request.getRequestURI()
+		);
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException(Exception e, HttpServletRequest request) {
-        log.error("[ERROR] {} - {}", request.getRequestURI(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                ErrorResponse.builder()
-                        .success(false)
-                        .message("서버 내부 오류가 발생했습니다.")
-                        .path(request.getRequestURI())
-                        .timestamp(LocalDateTime.now())
-                        .build()
-        );
-    }
+		return new ResponseEntity<>(ApiResponse.failure(response), HTTP_STATUS_OK);
+	}
 
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponse> handleCustomException(CustomException e, HttpServletRequest request) {
-        log.error("[CustomException] {} - {}", request.getRequestURI(), e.getMessage());
-        return ResponseEntity
-                .status(e.getErrorCode().getStatus())
-                .body(ErrorResponse.builder()
-                        .success(false)
-                        .message(e.getErrorCode().getMessage())
-                        .path(request.getRequestURI())
-                        .timestamp(LocalDateTime.now())
-                        .build());
-    }
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ApiResponse<ErrorResponse>> handleResourceNotFound(ResourceNotFoundException e,
+		HttpServletRequest request) {
+		log.error("[Error] ResourceNotFoundException : {}", e.getMessage());
+		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
 
+		ErrorResponse response = ErrorResponse.of(
+			NOT_FOUND,
+			e.getMessage(),
+			request.getRequestURI()
+		);
 
+		return new ResponseEntity<>(ApiResponse.failure(response), HTTP_STATUS_OK);
+	}
+
+	@ExceptionHandler(ExternalApiException.class)
+	public ResponseEntity<ApiResponse<ErrorResponse>> handleExternalApiException(ExternalApiException e,
+		HttpServletRequest request) {
+		log.error("[Error] ExternalApiException : {}", e.getMessage());
+		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
+
+		ErrorResponse response = ErrorResponse.of(
+			EXTERNAL_API_FAIL,
+			e.getMessage(),
+			request.getRequestURI()
+		);
+
+		return new ResponseEntity<>(ApiResponse.failure(response), HTTP_STATUS_OK);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ApiResponse<ErrorResponse>> handleException(Exception e, HttpServletRequest request) {
+		log.error("[Error] Exception : {}", e.getMessage());
+		log.error("[Error] 발생 이유: {}", e);
+		log.error("[Error] 예외 발생 지점 : {} | {}", request.getMethod(), request.getRequestURI());
+
+		ErrorResponse response = ErrorResponse.of(
+			INTERNAL_SERVER_ERROR,
+			INTERNAL_SERVER_ERROR.getMessage(),
+			request.getRequestURI()
+		);
+
+		return new ResponseEntity<>(ApiResponse.failure(response), HTTP_STATUS_OK);
+	}
 }

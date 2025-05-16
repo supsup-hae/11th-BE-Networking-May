@@ -1,7 +1,9 @@
-package cotato.backend.global.error;
+package cotato.backend.global.error.exception;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
+
+import cotato.backend.global.error.ErrorCode;
+import lombok.Getter;
 
 @Getter
 public class CustomException extends RuntimeException {
