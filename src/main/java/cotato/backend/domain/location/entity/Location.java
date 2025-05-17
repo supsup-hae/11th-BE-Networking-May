@@ -9,15 +9,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "location")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location extends BaseEntity {
 
 	@Id
@@ -35,4 +34,15 @@ public class Location extends BaseEntity {
 
 	@Column(nullable = false, name = "is_pinned")
 	private Boolean isPinned = false;
+
+	public void togglePin() {
+		isPinned = !isPinned;
+	}
+
+	@Builder
+	public Location(String name, BigDecimal latitude, BigDecimal longitude) {
+		this.name = name;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
 }
