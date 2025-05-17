@@ -1,4 +1,4 @@
-package cotato.backend.domain.entity;
+package cotato.backend.domain.location.entity;
 
 import java.math.BigDecimal;
 
