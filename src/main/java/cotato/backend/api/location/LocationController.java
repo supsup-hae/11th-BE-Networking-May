@@ -1,4 +1,4 @@
-package cotato.backend.domain.api;
+package cotato.backend.api.location;
 
 import java.util.List;
 
