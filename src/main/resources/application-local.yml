@@ -1,26 +1,25 @@
-# 로컬환경입니다. application-local.yml
 spring:
   config:
     import: optional:file:.env[.properties]
+
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/cotato
+    username: root
+    password: djbkjw020909
     driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      mode: never
+
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
         use_sql_comments: true
         highlight_sql: true
-        hbm2ddl:
-          auto: update
         default_batch_fetch_size: 1000
     open-in-view: false
+
 
 logging:
   level:

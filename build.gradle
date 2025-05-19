@@ -37,12 +37,14 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	//swagger
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
-	testImplementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: '2.3.0'
+// Swagger 관련 설정
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+	testImplementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.3.0'
 
-	// .env 파일 관리
+
+// .env 파일 관리
 	implementation 'me.paulschwarz:spring-dotenv:3.0.0'
+
 }
 
 tasks.named('test') {
