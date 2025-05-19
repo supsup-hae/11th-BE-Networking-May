@@ -62,8 +62,9 @@ src
                 │   ├── weather           # 날씨 도메인
                 │   │   ├── controller
                 │   │   ├── entity
+                │   │   ├── converter
                 │   │   ├── dto
-                │   │   ├── error
+                │   │   ├── exception
                 │   │   ├── enums
                 │   │   ├── repository
                 │   │   └── service
@@ -73,7 +74,7 @@ src
                 │       ├── controller
                 │       ├── entity
                 │       ├── dto
-                │       ├── error
+                │       ├── exception
                 │       ├── enums
                 │       ├── repository
                 │       └── service
