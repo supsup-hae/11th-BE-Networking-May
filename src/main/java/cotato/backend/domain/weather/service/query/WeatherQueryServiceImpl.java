@@ -35,6 +35,7 @@ public class WeatherQueryServiceImpl implements WeatherQueryService {
                 .sunrise("05:44")
                 .build();
     }
+
     @Override
     public HourlyWeatherResponseDto getHourlyWeather(Long locationId) {
         return weatherClient.getHourlyWeather(locationId);
@@ -44,6 +45,4 @@ public class WeatherQueryServiceImpl implements WeatherQueryService {
     public WeeklyWeatherResponseDto getWeeklyWeather(Long locationId) {
         return weatherClient.getWeeklyWeather(locationId);
     }
-
-
 }

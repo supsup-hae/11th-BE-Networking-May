@@ -9,9 +9,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -107,34 +110,48 @@ public class WeatherClient {
         Map<String, Object> response = restTemplate.getForObject(uri, Map.class);
         List<Map<String, Object>> dailyList = (List<Map<String, Object>>) response.get("list");
 
-        List<WeeklyWeatherResponseDto.DailyWeather> weatherList = new ArrayList<>();
+        List<WeeklyWeatherResponseDto.DailyWeather> weeklyWeather = new ArrayList<>();
 
         for (Map<String, Object> dayData : dailyList) {
             long unixTime = ((Number) dayData.get("dt")).longValue();
-            String date = Instant.ofEpochSecond(unixTime)
-                    .atZone(ZoneId.of("Asia/Seoul"))
-                    .toLocalDate()
-                    .toString(); // yyyy-MM-dd
+            LocalDate date = Instant.ofEpochSecond(unixTime).atZone(ZoneId.of("Asia/Seoul")).toLocalDate();
+            String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN); // 월, 화, 수...
 
             Map<String, Object> tempMap = (Map<String, Object>) dayData.get("temp");
-            double temp = ((Number) tempMap.get("day")).doubleValue();
+            double mornTemp = ((Number) tempMap.get("morn")).doubleValue();
+            double dayTemp = ((Number) tempMap.get("day")).doubleValue();
 
+            int humidity = ((Number) dayData.get("humidity")).intValue();  // 전체 습도
             String status = ((Map<String, Object>) ((List<?>) dayData.get("weather")).get(0)).get("description").toString();
 
-            weatherList.add(WeeklyWeatherResponseDto.DailyWeather.builder()
-                    .date(date)
-                    .temp(temp)
+            WeeklyWeatherResponseDto.TimeWeather morning = WeeklyWeatherResponseDto.TimeWeather.builder()
+                    .temp(mornTemp)
                     .status(status)
+                    .humidity(humidity)
+                    .build();
+
+            WeeklyWeatherResponseDto.TimeWeather afternoon = WeeklyWeatherResponseDto.TimeWeather.builder()
+                    .temp(dayTemp)
+                    .status(status)
+                    .humidity(humidity)
+                    .build();
+
+            weeklyWeather.add(WeeklyWeatherResponseDto.DailyWeather.builder()
+                    .date(date.toString())
+                    .dayOfWeek(dayOfWeek)
+                    .morning(morning)
+                    .afternoon(afternoon)
                     .build());
         }
 
-        String timestamp = Instant.now().toString();
-
         return WeeklyWeatherResponseDto.builder()
-                .data(weatherList)
-                .timestamp(timestamp)
+                .weeklyWeather(weeklyWeather)
+                .timestamp(Instant.now().toString())
                 .build();
     }
+
+
+
 
 
 
