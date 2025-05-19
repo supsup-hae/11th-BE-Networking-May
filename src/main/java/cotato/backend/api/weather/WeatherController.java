@@ -1,5 +1,6 @@
 package cotato.backend.api.weather;
 
+import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
 import cotato.backend.domain.weather.service.query.WeatherQueryService;
 import cotato.backend.global.common.ApiResponse;
@@ -18,4 +19,11 @@ public class WeatherController {
         WeatherDetailResponseDto result = weatherQueryService.getTodayWeather(locationId);
         return ApiResponse.success(result);
     }
+
+    @GetMapping("/hourly")
+    public ApiResponse<HourlyWeatherResponseDto> getHourlyWeather(@PathVariable("id") Long locationId) {
+        HourlyWeatherResponseDto result = weatherQueryService.getHourlyWeather(locationId);
+        return ApiResponse.success(result);
+    }
+
 }

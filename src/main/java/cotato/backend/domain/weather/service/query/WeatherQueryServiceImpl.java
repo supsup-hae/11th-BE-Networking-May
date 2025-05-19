@@ -1,5 +1,6 @@
 package cotato.backend.domain.weather.service.query;
 
+import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
 import cotato.backend.infra.weather.WeatherClient;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +34,9 @@ public class WeatherQueryServiceImpl implements WeatherQueryService {
                 .sunrise("05:44")
                 .build();
     }
+    @Override
+    public HourlyWeatherResponseDto getHourlyWeather(Long locationId) {
+        return weatherClient.getHourlyWeather(locationId);
+    }
+
 }
