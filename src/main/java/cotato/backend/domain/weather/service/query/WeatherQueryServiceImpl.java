@@ -2,6 +2,7 @@ package cotato.backend.domain.weather.service.query;
 
 import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
+import cotato.backend.domain.weather.dto.WeeklyWeatherResponseDto;
 import cotato.backend.infra.weather.WeatherClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,11 @@ public class WeatherQueryServiceImpl implements WeatherQueryService {
     public HourlyWeatherResponseDto getHourlyWeather(Long locationId) {
         return weatherClient.getHourlyWeather(locationId);
     }
+
+    @Override
+    public WeeklyWeatherResponseDto getWeeklyWeather(Long locationId) {
+        return weatherClient.getWeeklyWeather(locationId);
+    }
+
 
 }

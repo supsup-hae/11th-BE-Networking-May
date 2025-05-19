@@ -26,4 +26,12 @@ public class WeatherController {
         return ApiResponse.success(result);
     }
 
+    @GetMapping("/weekly")
+    public ApiResponse<?> getWeeklyWeather(@PathVariable("id") Long locationId) {
+        return ApiResponse.success(weatherQueryService.getWeeklyWeather(locationId));
+    }
+
+
+
+
 }

@@ -1,6 +1,7 @@
 package cotato.backend.infra.weather;
 
 import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
+import cotato.backend.domain.weather.dto.WeeklyWeatherResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -88,6 +89,53 @@ public class WeatherClient {
                 .timestamp(timestamp)
                 .build();
     }
+
+    public WeeklyWeatherResponseDto getWeeklyWeather(Long locationId) {
+        double lat = 37.5665;
+        double lon = 126.9780;
+
+        String uri = UriComponentsBuilder
+                .fromHttpUrl("https://api.openweathermap.org/data/2.5/forecast/daily")
+                .queryParam("lat", lat)
+                .queryParam("lon", lon)
+                .queryParam("cnt", 5)
+                .queryParam("appid", apiKey)
+                .queryParam("units", "metric")
+                .queryParam("lang", "kr")
+                .toUriString();
+
+        Map<String, Object> response = restTemplate.getForObject(uri, Map.class);
+        List<Map<String, Object>> dailyList = (List<Map<String, Object>>) response.get("list");
+
+        List<WeeklyWeatherResponseDto.DailyWeather> weatherList = new ArrayList<>();
+
+        for (Map<String, Object> dayData : dailyList) {
+            long unixTime = ((Number) dayData.get("dt")).longValue();
+            String date = Instant.ofEpochSecond(unixTime)
+                    .atZone(ZoneId.of("Asia/Seoul"))
+                    .toLocalDate()
+                    .toString(); // yyyy-MM-dd
+
+            Map<String, Object> tempMap = (Map<String, Object>) dayData.get("temp");
+            double temp = ((Number) tempMap.get("day")).doubleValue();
+
+            String status = ((Map<String, Object>) ((List<?>) dayData.get("weather")).get(0)).get("description").toString();
+
+            weatherList.add(WeeklyWeatherResponseDto.DailyWeather.builder()
+                    .date(date)
+                    .temp(temp)
+                    .status(status)
+                    .build());
+        }
+
+        String timestamp = Instant.now().toString();
+
+        return WeeklyWeatherResponseDto.builder()
+                .data(weatherList)
+                .timestamp(timestamp)
+                .build();
+    }
+
 
 
 }
