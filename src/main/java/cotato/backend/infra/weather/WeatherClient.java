@@ -41,6 +41,7 @@ public class WeatherClient {
 
         return restTemplate.getForObject(uri, String.class);
     }
+
     public HourlyWeatherResponseDto getHourlyWeather(Long locationId) {
         double lat = 37.5665;
         double lon = 126.9780;
@@ -77,20 +78,13 @@ public class WeatherClient {
                 status = (String) weatherObj.getOrDefault("description", "-");
             }
 
-            weatherList.add(HourlyWeatherResponseDto.HourlyWeather.builder()
-                    .time(time)
-                    .temp(temp)
-                    .status(status)
-                    .build());
+            weatherList.add(new HourlyWeatherResponseDto.HourlyWeather(time, temp, status));
         }
 
 
         String timestamp = Instant.now().toString();
 
-        return HourlyWeatherResponseDto.builder()
-                .data(weatherList)
-                .timestamp(timestamp)
-                .build();
+        return new HourlyWeatherResponseDto(weatherList, timestamp);
     }
 
     public WeeklyWeatherResponseDto getWeeklyWeather(Long locationId) {
@@ -124,35 +118,31 @@ public class WeatherClient {
             int humidity = ((Number) dayData.get("humidity")).intValue();  // 전체 습도
             String status = ((Map<String, Object>) ((List<?>) dayData.get("weather")).get(0)).get("description").toString();
 
-            WeeklyWeatherResponseDto.TimeWeather morning = WeeklyWeatherResponseDto.TimeWeather.builder()
-                    .temp(mornTemp)
-                    .status(status)
-                    .humidity(humidity)
-                    .build();
+            WeeklyWeatherResponseDto.TimeWeather morning = new WeeklyWeatherResponseDto.TimeWeather(
+                    mornTemp,
+                    status,
+                    humidity
+            );
 
-            WeeklyWeatherResponseDto.TimeWeather afternoon = WeeklyWeatherResponseDto.TimeWeather.builder()
-                    .temp(dayTemp)
-                    .status(status)
-                    .humidity(humidity)
-                    .build();
+            WeeklyWeatherResponseDto.TimeWeather afternoon = new WeeklyWeatherResponseDto.TimeWeather(
+                    dayTemp,
+                    status,
+                    humidity
+            );
 
-            weeklyWeather.add(WeeklyWeatherResponseDto.DailyWeather.builder()
-                    .date(date.toString())
-                    .dayOfWeek(dayOfWeek)
-                    .morning(morning)
-                    .afternoon(afternoon)
-                    .build());
+            weeklyWeather.add(new WeeklyWeatherResponseDto.DailyWeather(
+                    date.toString(),
+                    dayOfWeek,
+                    morning,
+                    afternoon
+            ));
         }
 
-        return WeeklyWeatherResponseDto.builder()
-                .weeklyWeather(weeklyWeather)
-                .timestamp(Instant.now().toString())
-                .build();
+        return new WeeklyWeatherResponseDto(
+                weeklyWeather,
+                Instant.now().toString()
+        );
     }
 
-
-
-
-
-
 }
+
