@@ -17,7 +17,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public WeatherDetailResponseDto getTodayWeather(Long locationId) {
-        String response = weatherClient.getCurrentWeather(37.5665, 126.9780); // 서울
+        WeatherDetailResponseDto response = weatherClient.getCurrentWeather(37.5665, 126.9780);
         log.info("🌤️ 날씨 API 응답 = {}", response);
 
         // 일단 목업(mock) 데이터로 리턴
