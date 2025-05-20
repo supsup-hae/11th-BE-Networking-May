@@ -51,7 +51,7 @@ public class SecurityConfig {
 			.headers(c -> c.frameOptions(
 				HeadersConfigurer.FrameOptionsConfig::disable).disable())
 			// CORS 필터 추가
-				.addFilterBefore(corsFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+				.addFilter(corsFilter)
 				.authorizeHttpRequests(auth -> auth
 				.requestMatchers(WHITE_LIST).permitAll()
 				.anyRequest().authenticated()
