@@ -1,10 +1,10 @@
-package cotato.backend.domain.weather.service.query;
+package cotato.backend.domain.weather.service;
 
 import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
 import cotato.backend.domain.weather.dto.WeeklyWeatherResponseDto;
 
-public interface WeatherQueryService {
+public interface WeatherService {
     WeatherDetailResponseDto getTodayWeather(Long locationId);
     HourlyWeatherResponseDto getHourlyWeather(Long locationId);
     WeeklyWeatherResponseDto getWeeklyWeather(Long locationId);

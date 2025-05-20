@@ -1,4 +1,4 @@
-package cotato.backend.domain.weather.service.query;
+package cotato.backend.domain.weather.service;
 
 import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WeatherQueryServiceImpl implements WeatherQueryService {
+public class WeatherServiceImpl implements WeatherService {
 
     private final WeatherClient weatherClient;
 
@@ -19,21 +19,19 @@ public class WeatherQueryServiceImpl implements WeatherQueryService {
         System.out.println("🌤️ 날씨 API 응답 = " + response);
 
         // 일단 목업(mock) 데이터로 리턴
-        return WeatherDetailResponseDto.builder()
-                .temp(12.2)
-                .timeOfDay("야간")
-                .status("흐림")
-                .feelsLike(9.0)
-                .humidity(48)
-                .wind(WeatherDetailResponseDto.Wind.builder()
-                        .direction("남동풍")
-                        .speed(0.4)
-                        .build())
-                .dust("보통")
-                .ultraFineDust("보통")
-                .uv("위험")
-                .sunrise("05:44")
-                .build();
+        return new WeatherDetailResponseDto(
+                12.2,
+                "야간",
+                "흐림",
+                9.0,
+                48,
+                new WeatherDetailResponseDto.Wind("남동풍", 0.4),
+                "보통",
+                "보통",
+                "위험",
+                "05:44"
+        );
+
     }
 
     @Override

@@ -2,9 +2,10 @@ package cotato.backend.api.weather;
 
 import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
-import cotato.backend.domain.weather.service.query.WeatherQueryService;
+import cotato.backend.domain.weather.service.WeatherService;
 import cotato.backend.global.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,24 +13,25 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class WeatherController {
 
-    private final WeatherQueryService weatherQueryService;
+    private final WeatherService weatherQueryService;
 
     @GetMapping
-    public ApiResponse<WeatherDetailResponseDto> getTodayWeather(@PathVariable("id") Long locationId) {
+    public ResponseEntity<ApiResponse<WeatherDetailResponseDto>> getTodayWeather(@PathVariable("id") Long locationId) {
         WeatherDetailResponseDto result = weatherQueryService.getTodayWeather(locationId);
-        return ApiResponse.success(result);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping("/hourly")
-    public ApiResponse<HourlyWeatherResponseDto> getHourlyWeather(@PathVariable("id") Long locationId) {
+    public ResponseEntity<ApiResponse<HourlyWeatherResponseDto>> getHourlyWeather(@PathVariable("id") Long locationId) {
         HourlyWeatherResponseDto result = weatherQueryService.getHourlyWeather(locationId);
-        return ApiResponse.success(result);
+        return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping("/weekly")
-    public ApiResponse<?> getWeeklyWeather(@PathVariable("id") Long locationId) {
-        return ApiResponse.success(weatherQueryService.getWeeklyWeather(locationId));
+    public ResponseEntity<ApiResponse<?>> getWeeklyWeather(@PathVariable("id") Long locationId) {
+        return ResponseEntity.ok(ApiResponse.success(weatherQueryService.getWeeklyWeather(locationId)));
     }
+
 
 
 
