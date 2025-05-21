@@ -51,8 +51,8 @@ public class SecurityConfig {
 			.headers(c -> c.frameOptions(
 				HeadersConfigurer.FrameOptionsConfig::disable).disable())
 			// CORS 필터 추가
-			.addFilter(corsFilter)
-			.authorizeHttpRequests(auth -> auth
+				.addFilter(corsFilter)
+				.authorizeHttpRequests(auth -> auth
 				.requestMatchers(WHITE_LIST).permitAll()
 				.anyRequest().authenticated()
 			)

@@ -39,4 +39,10 @@ public class LocationQueryService {
 			.map(locationConverter::toResponse)
 			.toList();
 	}
+
+	public Location findLocation(Long id) {
+		return locationRepository.findById(id)
+			.orElseThrow(() -> new LocationException(ErrorCode.LOCATION_NOT_FOUND));
+
+	}
 }
