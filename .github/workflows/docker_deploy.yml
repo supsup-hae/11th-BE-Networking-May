@@ -26,6 +26,8 @@ jobs:
           echo "SERVER_DB_URL=${{ secrets.SERVER_DB_URL }}" >> .env
           echo "SERVER_DB_USERNAME=${{ secrets.SERVER_DB_USERNAME }}" >> .env
           echo "SERVER_DB_PASSWORD=${{ secrets.SERVER_DB_PASSWORD }}" >> .env
+          echo "OPENWEATHER_API_KEY=${{ secrets.OPENWEATHER_API_KEY }}" >> .env
+          echo "FINEDUST_API_KEY=${{ secrets.FINEDUST_API_KEY }}" >> .env
       - name: gradlew 실행권한 설정
         run: chmod +x gradlew
 
@@ -79,6 +81,8 @@ jobs:
                   - SERVER_DB_URL=${{ secrets.SERVER_DB_URL }}
                   - SERVER_DB_USERNAME=${{ secrets.SERVER_DB_USERNAME }}
                   - SERVER_DB_PASSWORD=${{ secrets.SERVER_DB_PASSWORD }}
+                  - OPENWEATHER_API_KEY=${{ secrets.OPENWEATHER_API_KEY }}
+                  - FINEDUST_API_KEY=${{ secrets.FINEDUST_API_KEY }}
                   - TZ=Asia/Seoul
                 networks:
                   - app-network
