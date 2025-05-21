@@ -2,7 +2,7 @@ spring:
   application:
     name: develop1
   profiles:
-    active: local # 서버 환경 : dev | 로컬 환경 : local
+    active: dev # 서버 환경 : dev | 로컬 환경 : local
 
 
 springdoc:
