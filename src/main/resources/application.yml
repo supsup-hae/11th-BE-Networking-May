@@ -2,7 +2,7 @@ spring:
   application:
     name: develop1
   profiles:
-    active: dev # 서버 환경 : dev | 로컬 환경 : local
+    active: local # 서버 환경 : dev | 로컬 환경 : local
 
 
 springdoc:
@@ -24,6 +24,10 @@ management:
     web:
       exposure:
         include: health
-weather:
-  api:
+external:
+  openweather:
+    url: https://api.openweathermap.org/data/3.0/onecall
     key: ${OPENWEATHER_API_KEY}
+  airkorea:
+    url: https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty
+    key: ${DUST_API_KEY}

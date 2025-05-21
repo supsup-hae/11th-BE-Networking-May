@@ -1,21 +1,32 @@
+// src/main/java/cotato/backend/domain/weather/dto/WeeklyWeatherResponseDto.java
 package cotato.backend.domain.weather.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public record WeeklyWeatherResponseDto(
-        List<DailyWeather> weeklyWeather,
-        String timestamp
-) {
-    public record DailyWeather(
-            String date,
-            String dayOfWeek,
-            TimeWeather morning,
-            TimeWeather afternoon
-    ) {}
+import lombok.Builder;
 
-    public record TimeWeather(
-            double temp,
-            String status,
-            int humidity
-    ) {}
+@Builder
+public record WeeklyWeatherResponseDto(
+	List<DailyWeather> dailyWeather,
+	String timestamp
+) {
+	@Builder
+	public record DailyWeather(
+		LocalDate date,
+		String dayOfWeek,
+		WeatherInfo morning,
+		WeatherInfo afternoon
+	) {
+	}
+
+	@Builder
+	public record WeatherInfo(
+		double temp,
+		String status,
+		int humidity,
+		double windSpeed,
+		String windDirection
+	) {
+	}
 }
