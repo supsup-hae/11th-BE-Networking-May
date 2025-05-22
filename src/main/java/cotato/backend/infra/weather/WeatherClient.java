@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +24,7 @@ import cotato.backend.domain.weather.dto.WeeklyWeatherResponseDto;
 import cotato.backend.domain.weather.enums.UvIndexLevel;
 import cotato.backend.global.error.ErrorCode;
 import cotato.backend.infra.weather.dto.openweather.DailyWeatherApiResponse;
+import cotato.backend.infra.weather.dto.openweather.DustResult;
 import cotato.backend.infra.weather.dto.openweather.HourlyWeatherApiResponse;
 import cotato.backend.infra.weather.dto.openweather.WeeklyWeatherApiResponse;
 import cotato.backend.infra.weather.excpetion.WeatherException;
@@ -57,12 +57,13 @@ public class WeatherClient {
 
 		log.info(String.valueOf(response));
 		DailyWeatherApiResponse.Data data = response.data().get(0);
+
 		String windDirection = convertWindDirection(data.wind_deg());
 		String uvLevel = UvIndexLevel.fromValue(data.uvi());
 		String timeOfDay = resolveTimeOfDay(LocalTime.now(ZoneId.of("Asia/Seoul")));
-		// DustResult dustResult = fineDustClient.getDustLevels("종로구");
+		DustResult dustResult = fineDustClient.getDustLevels(lat, lon);
 
-		return WeatherConverter.toDetailResponse(data, windDirection, uvLevel, timeOfDay);
+		return WeatherConverter.toDetailResponse(data, windDirection, uvLevel, timeOfDay, dustResult);
 	}
 
 	private String resolveTimeOfDay(LocalTime now) {
@@ -73,13 +74,6 @@ public class WeatherClient {
 			return "오후";
 		else
 			return "야간";
-	}
-
-	private String convertToTime(long unix) {
-		return Instant.ofEpochSecond(unix)
-			.atZone(ZoneId.of("Asia/Seoul"))
-			.toLocalTime()
-			.format(DateTimeFormatter.ofPattern("HH:mm"));
 	}
 
 	private String convertWindDirection(int deg) {
