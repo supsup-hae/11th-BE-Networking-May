@@ -13,4 +13,4 @@ EXPOSE 8080
 COPY build/libs/*.jar app.jar
 
 # 컨테이너 실행 시 실행할 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "app.jar"]
