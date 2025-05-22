@@ -48,7 +48,7 @@ public class WeatherClient {
 			.queryParam("dt", Instant.now().getEpochSecond())
 			.queryParam("appid", apiKey)
 			.queryParam("units", "metric")
-			.queryParam("lang", "kr")
+			.queryParam("lang", "en")
 			.toUriString();
 		DailyWeatherApiResponse response =
 			Optional.ofNullable(restTemplate.getForObject(uri, DailyWeatherApiResponse.class))
@@ -96,7 +96,7 @@ public class WeatherClient {
 			.queryParam("exclude", "current,minutely,daily")
 			.queryParam("appid", apiKey)
 			.queryParam("units", "metric")
-			.queryParam("lang", "kr")
+			.queryParam("lang", "en")
 			.toUriString();
 
 		HourlyWeatherApiResponse response = Optional.ofNullable(
@@ -134,7 +134,7 @@ public class WeatherClient {
 			.queryParam("exclude", "current,minutely,hourly")
 			.queryParam("appid", apiKey)
 			.queryParam("units", "metric")
-			.queryParam("lang", "kr")
+			.queryParam("lang", "en")
 			.toUriString();
 
 		WeeklyWeatherApiResponse response = Optional.ofNullable(
