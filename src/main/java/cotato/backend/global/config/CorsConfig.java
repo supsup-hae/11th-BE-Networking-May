@@ -11,14 +11,16 @@ public class CorsConfig {
 
 	private static final String FRONT_LOCALHOST_URL = "http://localhost:3000";
 	private static final String SERVER_LOCALHOST_URL = "http://localhost:8080";
+	private static final String SERVER_IP = "http://43.201.229.207:8080";
 
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin(FRONT_LOCALHOST_URL);
-		config.addAllowedOrigin(SERVER_LOCALHOST_URL);
+		config.addAllowedOriginPattern(FRONT_LOCALHOST_URL);
+		config.addAllowedOriginPattern(SERVER_LOCALHOST_URL);
+		config.addAllowedOriginPattern(SERVER_IP);
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		// 모든 엔드포인트에 대해 CORS 설정 적용
@@ -26,3 +28,4 @@ public class CorsConfig {
 		return new CorsFilter(source);
 	}
 }
+
