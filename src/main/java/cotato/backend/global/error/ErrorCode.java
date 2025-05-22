@@ -14,7 +14,10 @@ public enum ErrorCode {
 
 	/*LOCAITON*/
 	ALREADY_EXISTS_LOCATION("이미 저장된 장소입니다.", HttpStatus.BAD_REQUEST),
-	LOCATION_NOT_FOUND("장소를 찾을수 없습니다.", HttpStatus.NOT_FOUND);
+	LOCATION_NOT_FOUND("장소를 찾을수 없습니다.", HttpStatus.NOT_FOUND),
+
+	/*WEATHER*/
+	INVALID_WEATHER_CODE("잘못된 날씨 코드 입니다.", HttpStatus.NOT_FOUND);
 
 	private final String message;
 	private final HttpStatus status;

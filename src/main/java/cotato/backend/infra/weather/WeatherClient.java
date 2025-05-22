@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import cotato.backend.domain.weather.converter.DescriptionConverter;
 import cotato.backend.domain.weather.converter.WeatherConverter;
 import cotato.backend.domain.weather.dto.HourlyWeatherResponseDto;
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
@@ -113,7 +114,7 @@ public class WeatherClient {
 				return HourlyWeatherResponseDto.HourlyWeather.builder()
 					.time(time)
 					.temp(hourData.temp())
-					.status(hourData.weather().get(0).description())
+					.status(DescriptionConverter.convert(hourData.weather().get(0).icon()))
 					.humidity(hourData.humidity())
 					.windSpeed(hourData.windSpeed())
 					.windDirection(convertWindDirection(hourData.windDeg()))
@@ -150,7 +151,7 @@ public class WeatherClient {
 
 				WeeklyWeatherResponseDto.WeatherInfo morningWeather = WeeklyWeatherResponseDto.WeatherInfo.builder()
 					.temp(dayData.temp().morn())
-					.status(dayData.weather().get(0).description())
+					.status(DescriptionConverter.convert(dayData.weather().get(0).icon()))
 					.humidity(dayData.humidity())
 					.windSpeed(dayData.windSpeed())
 					.windDirection(convertWindDirection(dayData.windDeg()))
@@ -158,7 +159,7 @@ public class WeatherClient {
 
 				WeeklyWeatherResponseDto.WeatherInfo afternoonWeather = WeeklyWeatherResponseDto.WeatherInfo.builder()
 					.temp(dayData.temp().day())
-					.status(dayData.weather().get(0).description())
+					.status(DescriptionConverter.convert(dayData.weather().get(0).icon()))
 					.humidity(dayData.humidity())
 					.windSpeed(dayData.windSpeed())
 					.windDirection(convertWindDirection(dayData.windDeg()))
