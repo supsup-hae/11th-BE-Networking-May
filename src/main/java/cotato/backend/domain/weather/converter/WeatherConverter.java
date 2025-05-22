@@ -17,7 +17,7 @@ public class WeatherConverter {
 		return WeatherDetailResponseDto.builder()
 			.temp(data.temp())
 			.timeOfDay(timeOfDay)
-			.status(data.weather().get(0).description())
+			.status(DescriptionConverter.convert(data.weather().get(0).icon()))
 			.feelsLike(data.feels_like())
 			.humidity(data.humidity())
 			.wind(Wind.builder()
