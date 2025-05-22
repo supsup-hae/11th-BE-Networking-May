@@ -2,7 +2,10 @@ package cotato.backend.domain.weather.converter;
 
 import cotato.backend.domain.weather.dto.WeatherDetailResponseDto;
 import cotato.backend.domain.weather.dto.Wind;
+import cotato.backend.domain.weather.enums.DustLevel;
+import cotato.backend.domain.weather.enums.UltraFineDustLevel;
 import cotato.backend.infra.weather.dto.openweather.DailyWeatherApiResponse;
+import cotato.backend.infra.weather.dto.openweather.DustResult;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -12,7 +15,8 @@ public class WeatherConverter {
 		DailyWeatherApiResponse.Data data,
 		String windDirection,
 		String uvLevel,
-		String timeOfDay
+		String timeOfDay,
+		DustResult dustResult
 	) {
 		return WeatherDetailResponseDto.builder()
 			.temp(data.temp())
@@ -24,8 +28,8 @@ public class WeatherConverter {
 				.direction(windDirection)
 				.speed(data.wind_speed())
 				.build())
-			// .dust(dustResult.dust())
-			// .ultraFineDust(dustResult.ultraFineDust())
+			.dust(DustLevel.fromValue(dustResult.pm10Value()))
+			.ultraFineDust(UltraFineDustLevel.fromValue(dustResult.pm25Value()))
 			.uv(uvLevel)
 			.sunrise(convertToTime(data.sunrise()))
 			.build();
